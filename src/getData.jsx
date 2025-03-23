@@ -11,7 +11,7 @@ const getHint = (word, meaningsObject) => {
   }
   
   const getWordData = async (word) => {
-    //given a single word string, call the Free Dictionary API and get the dictionary data for the word. Use getHint() as defined above to create a hint for the word, then return an object containing the word, part of speech and the hint created by the getHint() function in an object literal.
+    //given a single word string, call the Free Dictionary API and get the dictionary data for the word's first meaning. Use getHint() as defined above to create a hint for the word, then return an object containing the word, part of speech and the hint created by the getHint() function in an object literal.
     const url = `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
 
     try {
@@ -26,6 +26,7 @@ const getHint = (word, meaningsObject) => {
       }
     
       return wordData
+
     //add error handling in case word is not available
     } catch (error) {
       const wordData = {
@@ -40,7 +41,7 @@ const getHint = (word, meaningsObject) => {
   }
   
   const makeDataArray = async (inputString, setFunction) => {
-    //given any input string entered by the user, remove all punctuation and change to lowercase. Split into an array of separate words and call getWordData() on each word, to create an object with required data for each word. Create an array containing one data object for each word input by the user. Then, call the setFunction (passed in as an arument from App.jsx), which will set this newly-created array as the data to be processed by the table components (TableComponents.jsx)
+    //given any input string entered by the user, remove all punctuation and change to lowercase. Split into an array of separate words and call getWordData() on each word, to create an object with required data for each word. Create an array containing one data object for each word input by the user. Then, call the setFunction (passed in as an argument from App.jsx), which will set this newly-created array as the data to be processed by the table components (TableComponents.jsx)
     
     const loadingData = [{
       word: "loading...",
