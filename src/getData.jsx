@@ -1,4 +1,20 @@
 //given a single word string, and the first item of the "meanings" array returned from a call to the Free Dictionary API, create a "hint" string. The hint string is either the first example sentence with the word itself removed to form a cloze deletion hint, or if no example sentence is available, return the first definition followed by "_____".
+import { GoogleGenAI } from "@google/genai";
+import apiKey from "./secrets"
+
+const ai = new GoogleGenAI({apiKey: apiKey});
+
+async function callGemini(prompt) {
+  const response = await ai.models.generateContent({
+    model: "gemini-2.5-flash",
+    contents: prompt,
+  });
+  return response.text;
+}
+
+console.log(await callGemini("how are you today?"))
+
+
 const getHint = (word, meaningsObject) => {
 
     const pattern = new RegExp(word, "gi")
@@ -15,14 +31,27 @@ const getHint = (word, meaningsObject) => {
     const url = `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
 
     try {
-      const response = await fetch(url)
-      const json = await response.json()
-      const result = json[0].meanings[0]
+      // const response = await fetch(url)
+      // const json = await response.json()
+      // const result = json[0].meanings[0]
+    
+      // const wordData = {
+      //     word: word,
+      //     partOfSpeech: result.partOfSpeech,
+      //     hint: getHint(word, result)
+      // }
+    
+      // return wordData
+
+      const partOfSpeech = await callGemini(`please answer in a single word: what is the part of speech for the word "${word}"`)
+      const sentence = await callGemini(`please answer with a single sentence: give me a basic, easy-to-understand example sentence for the word "${word}", suitable for beginner or elementary learners of english, to help them understand the meaning of the word`)
+
+  
     
       const wordData = {
           word: word,
-          partOfSpeech: result.partOfSpeech,
-          hint: getHint(word, result)
+          partOfSpeech: partOfSpeech,
+          hint: sentence
       }
     
       return wordData

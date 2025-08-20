@@ -8,7 +8,7 @@ const InputForm = (props) => {
         <form className="width-limited space-above">
           <div className="mb-3">
             <label htmlFor="inputBox" className="form-label">Input your words here (up to 500 characters with words separated by lines, spaces or commas)</label>
-            <textarea className="form-control" id="inputBox" rows="3" maxlength="500"></textarea>
+            <textarea className="form-control" id="inputBox" rows="3" maxLength="500"></textarea>
           </div>
           <button type="button" onClick={props.clickFunction} className="btn btn-primary">Create Flashcards!</button>
         </form>
